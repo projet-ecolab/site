@@ -1,0 +1,7 @@
+- bouton "login" : startLoginBtn
+- bouton "register" : startSignupBtn
+- bouton "credits" : startCreditsBtn
+- bouton "logout" : logoutBtn (défaut: "display:none")
+- bouton "accueil" : homeBtn
+- bouton nom pseudo : myAccountBtn (défaut: "display:none")
+- bouton données : startDataBtn

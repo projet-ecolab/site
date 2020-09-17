@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="shortcut icon" href="img/LogoEcolab.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+    <script src="js/animation.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+    <script src="js/site.js"></script>
+    <title>Écolab</title>
+</head>
+<body onload="startSession();">
+    <!-- Menu -->
+    <div class="header">
+        <h1 class="logo">écolab</h1>
+        <div id="menuDiv">
+          <input type="checkbox" id="chk">
+          <label for="chk" class="show-menu-btn">
+            <i class="fas fa-bars"></i>
+          </label>
+          <ul class="menu">
+    
+            <a href="javascript:void(0)" onclick="showThing(4);" class="menuBtn current" id="homeBtn">Accueil</a>
+            <a href="javascript:void(0)" onclick="showThing(5);" style="display: none;" class="menuBtn" id="myAccountBtn">Mon profil</a>
+            <a href="contact.html" class="menuBtn" id="temporaire">Contact</a>
+            <a href="javascript:void(0)" onclick="showThing(6);" class="menuBtn" id="startDataBtn">Données</a>
+            <a href="javascript:void(0)" onclick="showThing(7);" class="menuBtn" id="startAppDlBtn">Application</a>
+            <a href="javascript:void(0)" onclick="showThing(0);" class="menuBtn" id="startLoginBtn">Se connecter</a>
+            <a href="javascript:void(0)" onclick="showThing(1);" class="menuBtn" id="startSignupBtn">S'inscrire</a>
+            <a href="javascript:void(0)" onclick="showThing(2);" class="menuBtn" id="startCreditsBtn">Crédits</a>
+            <a href="javascript:void(0)" onclick="showThing(3);" style="display: none;" class="menuBtn" id="logoutBtn">Se déconnecter</a>
+            <label for="chk" class="hide-menu-btn">
+              <i class="fas fa-times"></i>
+            </label>
+          </ul>
+        </div>
+      </div>
+
+
+
+    <div class="globalContainer">
+        <div><p id="messageDisplay"></p></div>
+        
+
+
+        <br>
+
+            <!-- Login -->
+            <div id="loginDiv" style="display:none" autocomplete="off">
+                <form class="box" action="javascript:void(0)">
+                    <input type="text" id="username_login_box" name="" placeholder="Nom d'utilisateur" required autocomplete="off">
+                    <input type="password" id="password_login_box" name="" placeholder="Mot de passe" required autocomplete="off">
+                    <input type="submit" name="" value="Se connecter" onclick="tryLogin();">
+                </form>
+            </div>
+        <br>
+        
+        <!-- Sign up -->
+        <div id="signupDiv" style="display:none" autocomplete="off">
+            <form class="box" action="javascript:void(0)">
+                <input type="text" id="username_register_box" name="" placeholder="Nom d'utilisateur" required autocomplete="off">
+                <input type="email" id="email_register_box" placeholder="Email" required autocomplete="off">
+                <input type="password" id="pw_register_box" name="" placeholder="Mot de passe" required autocomplete="off">
+                <input type="submit" name="" value="S'inscrire" onclick="tryRegister();">
+            </form>
+        </div>
+             
+
+        <!-- Découvrir -->
+        <div id="discoverDiv">
+            <h2>Découvrir le projet :</h2>
+            <p><span class="ecolab">Ecolab</span> est un projet collaboratif visant à sensibiliser le plus grand nombre à la qualité de son milieu de vie. 
+            Nous travaillons sur ce projet depuis la rentrée 2019. Nous espérons que cet outil permettra une large prise de conscience.</p>
+        </div>
+        <br>
+
+        <div id="mapContainerDiv">
+            <div id="map"></div>
+            <script src="js/map.js"></script>
+            <style type="text/css">
+                a.popup {
+                    text-decoration-line: none;
+                    color: #07B128;
+                    font-weight: bold;
+                    transition: 0.5s;
+                    font-size: 25px;
+                }
+                a.popup:hover {
+                    color: #49CB5C;
+                    transition: 0.5s;
+                }
+            </style>
+        </div>
+        <br>
+
+        
+        
+
+        <!-- Mon profil -->
+        <div id="monProfilMenuDiv" style="display:none">
+            <div id="account_data_div">
+                <p id="account_data">
+                    Chargement...
+                </p>
+                <button onclick="startEditAccount();">Modifier les infos</button>
+                <button onclick="startDeleteAccount();">Supprimer le compte</button>
+            </div>
+            <div id="confirm_edit_account_div" style="display:none">
+                <input id="edit_account_email" type="text" placeholder="Nouvelle adresse email...">
+                <input id="edit_account_pw" type="password" placeholder="Nouveau mot de passe...">
+                <button onclick="confirmEditAccount(true);">Appliquer les modifications</button>
+                <button onclick="confirmEditAccount(false);">Annuler les modifications</button>
+            </div>
+            <div id="delete_account_warning" style="display:none">
+                <h2>Votre attention sire!</h2>
+                <p>Vous vous apprêtez à supprimer de manière définitive votre compte. <br>
+                    Etes-vous sûr(e) de bien vouloir faire cela?</p>
+                <button onclick="confirmDeleteAccount(false);">Non, ramenez-moi au château!</button>
+                <button onclick="confirmDeleteAccount(true);">Oui, toutes voiles dehors!</button>
+            </div>
+        </div>
+
+        <!-- Télécharger l'application -->
+        <div id="dlDiv">
+
+        </div>
+
+        <!-- Credits -->
+        <div id="creditsDiv" style="display:none">
+            <h2>Club sciences 2019-2020 :</h2>
+        <ul>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+        </ul>
+        <!-- <h2>Club sciences 2020-2021</h2>
+        <ul>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+            <li class="name"></li>
+        </ul> -->
+        <h2>Professeurs :</h2>
+        <ul>
+            <li class="name">Mme Cordier (techno)</li>
+            <li class="name">M. Evain (physique-chimie)</li>
+            <li class="name">Mme Saugues (SVT)</li>
+        </ul>
+        <h2>Personnes extérieures</h2>
+        <ul>
+            <li class="name">Romain
+                <p>Pour le back-end</p>
+            </li>
+            <li class="pseudo">Nashimato#2864 <span class="achtung">*</span>
+                <p class="explain">Pour le design des badges</p>
+            </li>
+            <li class="pseudo">Pioupia#2962 <span class="achtung">*</span>
+                <p class="explain">Pour ses conseils avisés en développement web</p>
+            </li>
+        </ul>
+        <p><span class="achtung">*</span>Pseudonyme utilisé en ligne</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Écolab</title>
+<link rel="shortcut icon" href="img/LogoEcolab.png" type="image/x-icon">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="js/pace.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-bez@1.0.11/src/jquery.bez.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Chargement -->
+	<div id="preloader">
+		<div class="loadimage">
+			<img src="img/LogoEcolab.png"></div>
+	</div>
+</div>
+<script>
+	paceOptions = {
+		ajax: true,
+		document: true,
+		eventLag: false
+	};
+
+	Pace.on('done', function () {
+		$('.p').delay(500).animate({ top: '30%', opacity: '0' }, 3000, $.bez([0.19, 1, 0.22, 1]));
+		//Permet de faire un fondu sur le "titre"
+
+		$('#preloader').delay(1500).animate({ top: '-100%' }, 2000, $.bez([0.19, 1, 0.22, 1]));
+		//C'est le fond en gris qui part
+	});
+</script>
+<!-- Après le chargement -->
+<a class="notredirected" href="main.html">
+	<img src="img/LogoEcolab.png" alt="">
+	<p>Si vous n'êtes pas redirigé(e)cliquez ici</p>
+</a>
+<script>
+	Pace.on('done', function() {
+        document.location.href="main.html";
+       });
+</script>
+</body>
+</html>
